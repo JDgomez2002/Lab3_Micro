@@ -12,10 +12,12 @@
 #include <errno.h>
 #include <unistd.h>
 #include <iostream>
+#include <math.h>
 using namespace std;
 
 //VARIABLES
-
+int n;
+double sum = 0;
 
 //-----------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------
@@ -23,8 +25,11 @@ using namespace std;
 //-----------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------
 
-void *my_Subrutine(){
-    cout << "Hello World!" << endl;
+void *summation(void *thread_number){
+    long number = (long)thread_number;
+    double* result = new double;
+    *result = 3/(pow(2,number));
+    return result;
 }
 
 //-----------------------------------------------------------------------------------------------------------------
@@ -37,13 +42,32 @@ void welcome();
 void closing();
 void request();
 void n_calculation();
+void show_result();
 
 int main(){
     welcome();
+    request();
 
+    int rc;
+    long i;
+    pthread_t tid;
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+    void *ptr_sum;
+
+    for(int i = 0; i<=n ;i++){
+        rc = pthread_create(&tid, &attr, summation, (void *)i);
+        rc = pthread_join(tid, &ptr_sum);
+        sum += (*(double*) ptr_sum);
+    }
+
+    show_result();
+    closing();
+    pthread_exit(NULL);
     return 0;
 }
-
 
 //-----------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------
@@ -60,8 +84,8 @@ void welcome(){
 }
 
 void closing(){
-    cout << "\n---------------------------------------------------------"<<endl;
-    cout << "- Muchas gracias por utilizar contador de primos!" << endl;
+    cout << "---------------------------------------------------------"<<endl;
+    cout << "- Muchas gracias por utilizar la sumatoria!" << endl;
     cout << "- Vuelve Pronto!" << endl;
     cout << "---------------------------------------------------------"<<endl;
     cout << endl;
@@ -69,31 +93,15 @@ void closing(){
 
 void request(){
     cout << "---------------------------------------------------------"<<endl;
-    cout << "Ingrese el valor maximo >> ";
-    cin >> max_calculation;
+    cout << "Ingrese el valor de n >> ";
+    cin >> n;
     cout << endl;
-    cout << "Ingrese numero de threads >> ";
-    cin >> pt_amount;
-    cout << "---------------------------------------------------------"<<endl;
+    cout << "Valor de n: " << n << endl;
 }
 
-void n_calculation(){
-    int distribution = (max_calculation/pt_amount);
-    cout << "Residuo: " << distribution << endl;
-    pt_ranges = new int[pt_amount];
-    if((max_calculation%pt_amount)==0){
-        for(int i = 0; i<pt_amount; i++){
-            pt_ranges[i] = distribution;
-        }
-    }
-    else{
-        for(int i = 0; i<pt_amount; i++){
-            if(i==(pt_amount-1)){
-                pt_ranges[i] = (distribution+(max_calculation%pt_amount));
-            }
-            else{
-                pt_ranges[i] = distribution;
-            }
-        }
-    }
+void show_result(){
+    cout << "---------------------------------------------------------"<<endl;
+    cout << endl;
+    cout << "El TOTAL de la SUMATORIA es de: " << sum << endl;
+    cout << endl;
 }
