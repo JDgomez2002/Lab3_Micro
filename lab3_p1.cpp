@@ -104,12 +104,12 @@ int main(){
     request();
     n_calculation();
 
-    cout << "Reparticion de los '" << pt_amount << "' Threads hasta "<< max_calculation << ": ";
+    cout << "Reparticion de los '" << pt_amount << "' Threads hasta "<< max_calculation << ": [ ";
 
     for(int i = 0; i<pt_amount; i++){
         cout << pt_ranges[i] << " ";
     }
-    cout << "\n---------------------------------------------------------\n"<<endl;
+    cout << "]\n---------------------------------------------------------\n"<<endl;
 
     int rc;
     long i;
