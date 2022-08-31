@@ -11,14 +11,8 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
-// #define NTHREADS 2
 #include <iostream>
 using namespace std;
-
-void welcome();
-void closing();
-void request();
-void n_calculation();
 
 int max_calculation, pt_amount, n, *pt_ranges;
 int total;
@@ -34,11 +28,8 @@ void *calculation(void *thread_number){
     long tID = (long)thread_number;
     int total_pt = 0;
     if(tID==(pt_amount-1)){
-        // cout << "\ntID-1" << tID-1 << endl;
-        // cout << "pt_ranges[tID-1] " << pt_ranges[tID-1] << endl;
-        // cout << "pt_ranges[tID] " << pt_ranges[tID] << endl;
         begining = (((tID-1)*(pt_ranges[tID-1]))+pt_ranges[tID-1]);
-        end = (begining+pt_ranges[tID]); //+1 porque incluimos el final
+        end = (begining+pt_ranges[tID]);
     }
     else{
         begining = (tID*(pt_ranges[tID]));
@@ -48,7 +39,7 @@ void *calculation(void *thread_number){
 
     if(tID==(pt_amount-1)){
         cout << "- Thread " << tID << ": from " << begining << " to " << end << " (Incluyendolo: Final)" << endl;
-        end++;
+        end++; //Porque queremos incluir el numero final, por ejemplo 0->83, el 83 se inlcuye porque es primo.
     }
     else{
         cout << "- Thread " << tID << ": from " << begining << " to " << end << " (Sin incluirlo)" << endl;
@@ -77,7 +68,7 @@ void *calculation(void *thread_number){
             }
         }
         //1,2,3
-        else if(((k>0)&&(k<4))){
+        else if(((k>1)&&(k<4))){
             if(k==(end-1)){
                     cout << k;
             }
@@ -98,6 +89,11 @@ void *calculation(void *thread_number){
 //MAIN PROGRAM
 //-----------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------
+
+void welcome();
+void closing();
+void request();
+void n_calculation();
 
 int main(){
     welcome();
