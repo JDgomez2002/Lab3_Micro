@@ -4,7 +4,7 @@
 //Catedratico Roger Diaz
 //Segundo Semestre 2022
 //Jose Daniel Gomez Cabrera 21429
-//Actividad: Laboratorio 03
+//Actividad: Laboratorio 03 Parte 1
 
 #include <pthread.h>
 #include <stdio.h>
