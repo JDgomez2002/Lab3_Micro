@@ -115,15 +115,7 @@ int main(){
 
     for(i = 0; i<pt_amount; i++){
         rc = pthread_create(&tid, &attr, calculation, (void *)i);
-        if (rc) {              
-        printf("ERROR; return code from pthread_create() is %d\n", rc);
-        exit(-1);
-        }
         rc = pthread_join(tid, NULL);
-        if (rc) {
-        printf("ERROR; return code from pthread_join() is %d\n", rc);
-        exit(-1);
-        }
     }
     
     cout << "---------------------------------------------------------"<<endl;
