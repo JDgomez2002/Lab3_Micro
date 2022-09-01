@@ -67,7 +67,7 @@ void *calculation(void *thread_number){
                 total_pt += k;
             }
         }
-        //1,2,3
+        //2,3
         else if(((k>1)&&(k<4))){
             if(k==(end-1)){
                     cout << k;
