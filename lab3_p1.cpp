@@ -68,7 +68,7 @@ void *calculation(void *thread_number){
             }
         }
         //2,3
-        else if(((k>1)&&(k<4))){
+        else if((k>1)&&(k<4)){
             if(k==(end-1)){
                     cout << k;
             }
