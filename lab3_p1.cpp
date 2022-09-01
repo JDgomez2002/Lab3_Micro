@@ -14,6 +14,7 @@
 #include <iostream>
 using namespace std;
 
+//VARIABLES
 int max_calculation, pt_amount, n, *pt_ranges;
 int total;
 
@@ -35,7 +36,6 @@ void *calculation(void *thread_number){
         begining = (tID*(pt_ranges[tID]));
         end = (begining+pt_ranges[tID]);
     }
-    // cout << "- Thread " << tID << ": from " << begining << " to " << end << " (Sin incluirlo)" << endl;
 
     if(tID==(pt_amount-1)){
         cout << "- Thread " << tID << ": from " << begining << " to " << end << " (Incluyendolo: Final)" << endl;
@@ -75,7 +75,6 @@ void *calculation(void *thread_number){
             else{
                 cout << k << ", ";
             }
-            // cout << k << ", ";
             total_pt += k;
         }
     }
