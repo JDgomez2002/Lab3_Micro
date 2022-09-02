@@ -58,7 +58,7 @@ int main(){
     void *ptr_sum;
 
     for(int i = 0; i<=n ;i++){
-        rc = pthread_create(&tid, &attr, summation, (void *)i);
+        rc = pthread_create(&tid, &attr, summation, (void *)&i);
         rc = pthread_join(tid, &ptr_sum);
         sum += (*(double*) ptr_sum);
     }

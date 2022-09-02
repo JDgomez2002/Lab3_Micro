@@ -12,6 +12,9 @@
 #include <errno.h>
 #include <unistd.h>
 #include <iostream>
+#include <string.h>
+#include <string>
+#include<sstream>  
 using namespace std;
 
 //VARIABLES
@@ -28,6 +31,7 @@ void *calculation(void *thread_number){
     long begining, end, k;
     long tID = (long)thread_number;
     int total_pt = 0;
+    string show_result = "";
     if(tID==(pt_amount-1)){
         begining = (((tID-1)*(pt_ranges[tID-1]))+pt_ranges[tID-1]);
         end = (begining+pt_ranges[tID]);
@@ -38,14 +42,17 @@ void *calculation(void *thread_number){
     }
 
     if(tID==(pt_amount-1)){
-        cout << "- Thread " << tID << ": from " << begining << " to " << end << " (Incluyendolo: Final)" << endl;
+        // cout << "- Thread " << tID << ": from " << begining << " to " << end << " (Incluyendolo: Final)" << endl;
+        show_result += ("- Thread "+to_string(tID)+": from "+to_string(begining)+" to "+to_string(end)+" (Incluyendolo: Final)\n");
         end++; //Porque queremos incluir el numero final, por ejemplo 0->83, el 83 se inlcuye porque es primo.
     }
     else{
-        cout << "- Thread " << tID << ": from " << begining << " to " << end << " (Sin incluirlo)" << endl;
+        // cout << "- Thread " << tID << ": from " << begining << " to " << end << " (Sin incluirlo)" << endl;
+        show_result += ("- Thread "+to_string(tID)+": from "+to_string(begining)+" to "+to_string(end)+" (Sin incluirlo)\n");
     }
 
-    cout << "Primos: ";
+    // cout << "Primos: ";
+    show_result += "Primos: ";
     for(k = begining; k<end ;k++){
         //4,5,6,etc...,k
         if(k>3){
@@ -59,10 +66,12 @@ void *calculation(void *thread_number){
             }
             if(prime){
                 if(k==(end-1)){
-                    cout << k;
+                    // cout << k;
+                    show_result += to_string(k);
                 }
                 else{
-                    cout << k << ", ";
+                    // cout << k << ", ";
+                    show_result += to_string(k)+", ";
                 }
                 total_pt += k;
             }
@@ -70,15 +79,19 @@ void *calculation(void *thread_number){
         //2,3
         else if((k>1)&&(k<4)){
             if(k==(end-1)){
-                    cout << k;
+                    // cout << k;
+                    show_result += to_string(k);
             }
             else{
-                cout << k << ", ";
+                // cout << k << ", ";
+                show_result += to_string(k)+", ";
             }
             total_pt += k;
         }
     }
-    cout << "\nTOTAL hilo: " << total_pt << "\n" << endl;
+    // cout << "\nTOTAL hilo: " << total_pt << "\n" << endl;
+    show_result += ("\nTOTAL hilo: "+to_string(total_pt)+"\n\n");
+    cout << show_result;
     total += total_pt;
     pthread_exit(NULL);
 }
@@ -115,6 +128,11 @@ int main(){
 
     for(i = 0; i<pt_amount; i++){
         rc = pthread_create(&tid, &attr, calculation, (void *)i);
+        // rc = pthread_join(tid, NULL);
+    }
+
+    for(i = 0; i<pt_amount; i++){
+        // rc = pthread_create(&tid, &attr, calculation, (void *)i);
         rc = pthread_join(tid, NULL);
     }
     
